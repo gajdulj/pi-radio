@@ -1,6 +1,0 @@
-alias radio_check="echo $(pgrep -f 'sudo python3 radio/play_radio.py')"
-alias radio_off="sudo kill $(pgrep -f 'sudo python3 radio/play_radio.py')"
-alias radio_on="nohup sudo python3 radio/play_radio.py > radio.log &"
-alias ra="vim radio/play_radio.py"
-alias re="radio_off && radio_on"
-alias sound="alsamixer -c 1"

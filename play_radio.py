@@ -5,21 +5,24 @@ import subprocess
 import time
 
 ### Setup daily alarm ###
-SCHEDULE_TIME = '08:30'
-STATION_NAME = 'BBC_ONE'
+SCHEDULE_TIME = '08:00'
+STATION_NAME = 'LOCA_TECH'
 TIMEOUT_SECONDS = 360
-TEST_RUN =  False
+TEST_RUN =  True
+AUDIO_DEVICE = "0.0"
 #########################
 
 
 def play_radio(station_name=STATION_NAME, timeout_seconds=TIMEOUT_SECONDS):
     stations = {
-            'BBC_ONE':'http://stream.live.vc.bbcmedia.co.uk/bbc_radio_one',
-            'BBC_FOUR':'http://stream.live.vc.bbcmedia.co.uk/bbc_radio_fourfm',
+            'BBC_ONE':'http://as-hls-ww-live.akamaized.net/pool_904/live/ww/bbc_radio_one/bbc_radio_one.isml/bbc_radio_one-audio%3d96000.norewind.m3u8',
+            'BBC_FOUR':'http://as-hls-ww-live.akamaized.net/pool_904/live/ww/bbc_radio_fourfm/bbc_radio_fourfm.isml/bbc_radio_fourfm-audio%3d96000.norewind.m3u8',
+            'LOCA_URBAN':'https://s3.we4stream.com:2020/stream/locaurban',
+            'LOCA_TECH': 'https://s3.we4stream.com:2020/stream/locafm'
             }
     station_url = stations[station_name]
 
-    play_command = f"sudo timeout {timeout_seconds}s mplayer {station_url} -noconsolecontrols -really-quiet"
+    play_command = f"timeout {timeout_seconds}s mpv {station_url} -really-quiet"
     print("Executing following command:", play_command)
 
     return [play_command]
@@ -37,7 +40,7 @@ def schedule_for(time):
 def run_schedule():
     schedule_for(SCHEDULE_TIME)
     while True:
-        # print(time.asctime( time.localtime(time.time()) ))
+        print(time.asctime( time.localtime(time.time()) ))
         schedule.run_pending()
         time.sleep(1)
 

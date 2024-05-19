@@ -13,7 +13,8 @@ stations = {
 }
 
 # Initialize VLC player instance
-player = vlc.MediaPlayer()
+vlc_args = ["--aout=alsa"]
+player = vlc.MediaPlayer(vlc_args)
 
 
 @app.route("/", methods=["GET", "POST"])

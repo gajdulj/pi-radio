@@ -6,9 +6,9 @@
     <title>Radio Domowe 📻 </title>
 </head>
 <body>
-    <h1>Internet Radio Player</h1>
+    <h1>Radio Domowe</h1>
     <form method="post">
-        <label for="station">Select a station:</label>
+        <label for="station">station:</label>
         <select name="station" id="station">
             {% for station, url in stations.items() %}
                 <option value="{{ station }}" {% if station == current_station %}selected{% endif %}>{{ station }}</option>

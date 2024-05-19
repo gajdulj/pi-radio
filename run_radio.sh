@@ -4,4 +4,4 @@
 
 # change to directory with the web app
 cd /home/pi/pi-radio
-python3 run app.py
+python3 app.py

@@ -4,4 +4,4 @@
 
 # change to directory with streamlit app
 cd /path/to/your/radio_player_script
-streamlit run radio_player.py
+streamlit run app.py

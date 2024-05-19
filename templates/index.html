@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Domowe 📻 </title>
+</head>
+<body>
+    <h1>Internet Radio Player</h1>
+    <form method="post">
+        <label for="station">Select a station:</label>
+        <select name="station" id="station">
+            {% for station, url in stations.items() %}
+                <option value="{{ station }}" {% if station == current_station %}selected{% endif %}>{{ station }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" name="play">Play</button>
+        <button type="submit" name="stop">Stop</button>
+    </form>
+    {% if current_station %}
+        <p>Currently playing: {{ current_station }}</p>
+    {% endif %}
+    <form method="post">
+        <label for="volume">Volume:</label>
+        <input type="range" id="volume" name="volume" min="0" max="100" value="{{ volume }}">
+        <span>{{ volume }}</span>
+        <button type="submit">Set Volume</button>
+    </form>
+</body>
+</html>

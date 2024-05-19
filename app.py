@@ -1,5 +1,8 @@
-import streamlit as st
+from flask import Flask, render_template, request, session
 import vlc
+
+app = Flask(__name__)
+app.secret_key = "your_secret_key"
 
 # Define the radio stations
 stations = {
@@ -9,32 +12,39 @@ stations = {
     "LOCA_TECH": "https://s3.we4stream.com:2020/stream/locafm",
 }
 
-# Create a VLC player instance
-if "player" not in st.session_state:
-    st.session_state.player = vlc.MediaPlayer()
+# Initialize VLC player instance
+player = vlc.MediaPlayer()
+
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if "volume" not in session:
+        session["volume"] = 50
+    if request.method == "POST":
+        if "play" in request.form:
+            station_name = request.form["station"]
+            session["station_name"] = station_name
+            play_station(stations[station_name])
+        elif "stop" in request.form:
+            player.stop()
+        elif "volume" in request.form:
+            volume = int(request.form["volume"])
+            session["volume"] = volume
+            player.audio_set_volume(volume)
+
+    return render_template(
+        "index.html",
+        stations=stations,
+        current_station=session.get("station_name", ""),
+        volume=session["volume"],
+    )
 
 
 def play_station(station_url):
-    st.session_state.player.stop()
-    st.session_state.player.set_mrl(station_url)
-    st.session_state.player.play()
+    player.stop()
+    player.set_mrl(station_url)
+    player.play()
 
 
-# Streamlit interface
-st.title("Internet Radio Player")
-
-# Select a radio station
-station_name = st.selectbox("Select a station", list(stations.keys()))
-
-if st.button("Play"):
-    play_station(stations[station_name])
-    st.write(f"Playing {station_name}")
-
-if st.button("Stop"):
-    st.session_state.player.stop()
-    st.write("Stopped playing")
-
-# Volume control
-volume = st.slider("Volume", 0, 100, 50)
-st.session_state.player.audio_set_volume(volume)
-st.write(f"Current volume: {volume}")
+if __name__ == "__main__":
+    app.run(debug=True)
